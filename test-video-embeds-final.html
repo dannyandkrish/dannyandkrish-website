@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Embed Test - Danny & Krish</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .video-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            margin: 15px 0;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+        .test-info {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .error-info {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .success-info {
+            background-color: #e8f5e8;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .status.working { background: #c8e6c9; color: #2e7d32; }
+        .status.error { background: #ffcdd2; color: #c62828; }
+        .status.test { background: #fff3e0; color: #ef6c00; }
+    </style>
+</head>
+<body>
+    <h1>🎬 Video Embed Testing - Danny & Krish</h1>
+    
+    <div class="test-info">
+        <h3>📋 Test Purpose</h3>
+        <p>This page tests all video embeds to identify which ones work and which need fixing:</p>
+        <ul>
+            <li><strong>YouTube:</strong> Current placeholder IDs vs. valid test IDs</li>
+            <li><strong>Google Drive:</strong> Your actual video file IDs</li>
+            <li><strong>Spotify:</strong> Known working embed (for comparison)</li>
+        </ul>
+    </div>
+
+    <div class="video-section">
+        <h2>🔴 YouTube Embeds</h2>
+        
+        <h3>❌ Current Placeholder ID: "dQw4w9WgXcQ" (Rick Astley)</h3>
+        <div class="status test">CURRENT PLACEHOLDER</div>
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
+                title="Current Placeholder Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <p><em>This is what all your current YouTube embeds use. If this doesn't work properly, that's the issue.</em></p>
+
+        <h3>✅ Test with Known Good YouTube Video</h3>
+        <div class="status test">KNOWN WORKING ID</div>
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/jNQXAC9IVRw?rel=0&modestbranding=1"
+                title="Test Video - Me at the zoo"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <p><em>This should definitely work (first YouTube video ever uploaded). If this works but the placeholder doesn't, you need new video IDs.</em></p>
+    </div>
+
+    <div class="video-section">
+        <h2>📁 Google Drive Video Embeds</h2>
+        <p>Testing your actual Google Drive video file IDs:</p>
+
+        <h3>🎵 Alehouse Performance</h3>
+        <div class="status test">TESTING YOUR FILE ID</div>
+        <div class="video-container">
+            <iframe 
+                src="https://drive.google.com/file/d/1y92Eh1gx9To4Bker_7GQg-Q1I3Yzw7mr/preview"
+                title="Alehouse Performance"
+                allow="autoplay">
+            </iframe>
+        </div>
+
+        <h3>🎭 Hindi Performance</h3>
+        <div class="status test">TESTING YOUR FILE ID</div>
+        <div class="video-container">
+            <iframe 
+                src="https://drive.google.com/file/d/1dLQ57Pryor1AMulHpN0aHgx1OAdUX1ee/preview"
+                title="Hindi Performance"
+                allow="autoplay">
+            </iframe>
+        </div>
+
+        <h3>🎸 English Performance</h3>
+        <div class="status test">TESTING YOUR FILE ID</div>
+        <div class="video-container">
+            <iframe 
+                src="https://drive.google.com/file/d/1Myxh_7bmXNoCNNkJ5Tga957HvYYX0J3r/preview"
+                title="English Performance"
+                allow="autoplay">
+            </iframe>
+        </div>
+
+        <h3>🎼 Telugu Performance</h3>
+        <div class="status test">TESTING YOUR FILE ID</div>
+        <div class="video-container">
+            <iframe 
+                src="https://drive.google.com/file/d/1uPmYxcgV0_f-fotpcoCYp1e6UJHmVYY9/preview"
+                title="Telugu Performance"
+                allow="autoplay">
+            </iframe>
+        </div>
+
+        <h3>🎶 Tamil Performance</h3>
+        <div class="status test">TESTING YOUR FILE ID</div>
+        <div class="video-container">
+            <iframe 
+                src="https://drive.google.com/file/d/1Sm8OXSvJR7wjgz6vP_evX4WcWrsXsjzF/preview"
+                title="Tamil Performance"
+                allow="autoplay">
+            </iframe>
+        </div>
+    </div>
+
+    <div class="video-section">
+        <h2>🎵 Spotify Embed (Reference)</h2>
+        <div class="status working">SHOULD WORK AFTER CSP FIX</div>
+        <iframe 
+            style="border-radius:12px" 
+            src="https://open.spotify.com/embed/track/4iV5W9uYEdYUVa79Axb7Rh?utm_source=generator" 
+            width="100%" 
+            height="152" 
+            frameBorder="0" 
+            allowfullscreen 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy">
+        </iframe>
+        <p><em>This Spotify embed should work since we fixed the CSP.</em></p>
+    </div>
+
+    <div class="error-info">
+        <h3>🔧 How to Fix Issues</h3>
+        <h4>For YouTube Videos:</h4>
+        <ul>
+            <li>If the placeholder (Rick Astley) doesn't work, the video might be restricted</li>
+            <li>If the test video works but placeholder doesn't, you need real YouTube video IDs</li>
+            <li>Replace all "dQw4w9WgXcQ" in Videos.js with your actual YouTube video IDs</li>
+        </ul>
+        
+        <h4>For Google Drive Videos:</h4>
+        <ul>
+            <li>If videos don't load, check sharing permissions: "Anyone with the link can view"</li>
+            <li>Make sure file IDs are correct (should be ~33 characters)</li>
+            <li>Verify the files exist in your Google Drive</li>
+        </ul>
+    </div>
+
+    <div class="success-info">
+        <h3>📝 Next Steps</h3>
+        <ol>
+            <li>Test this page locally and on your deployed site</li>
+            <li>Note which embeds work and which don't</li>
+            <li>For YouTube: Get your real video IDs and replace placeholders</li>
+            <li>For Google Drive: Fix sharing permissions if needed</li>
+            <li>Update your site with working video IDs</li>
+        </ol>
+    </div>
+
+    <script>
+        // Add load event listeners to track which videos load successfully
+        document.addEventListener('DOMContentLoaded', function() {
+            const iframes = document.querySelectorAll('iframe');
+            
+            iframes.forEach((iframe, index) => {
+                iframe.addEventListener('load', function() {
+                    console.log(`✅ Video ${index + 1} loaded successfully:`, iframe.src);
+                });
+                
+                iframe.addEventListener('error', function() {
+                    console.log(`❌ Video ${index + 1} failed to load:`, iframe.src);
+                });
+            });
+            
+            // Log current page URL for testing
+            console.log('🎬 Video test page loaded. Check console for embed status.');
+            console.log('📍 Current URL:', window.location.href);
+        });
+    </script>
+</body>
+</html>

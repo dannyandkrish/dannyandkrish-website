@@ -143,9 +143,29 @@ export const getGoogleDriveVideoUrl = (fileId) => {
     return null;
   }
   
-  // Use Google Drive's direct streaming URL format
-  // This format works for embedding videos from Google Drive
+  // Use Google Drive's direct streaming URL format for better embedding
+  // This format is more reliable for iframe embedding
   return `https://drive.google.com/file/d/${fileId}/preview`;
+};
+
+// Alternative function to get Google Drive video as direct download/view link
+export const getGoogleDriveVideoDirectUrl = (fileId) => {
+  if (!fileId || fileId.startsWith('PLACEHOLDER')) {
+    return null;
+  }
+  
+  // This creates a direct view link (opens in new tab)
+  return `https://drive.google.com/file/d/${fileId}/view`;
+};
+
+// Function to get Google Drive video thumbnail
+export const getGoogleDriveVideoThumbnail = (fileId) => {
+  if (!fileId || fileId.startsWith('PLACEHOLDER')) {
+    return null;
+  }
+  
+  // Google Drive provides thumbnails for videos
+  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w480-h360`;
 };
 
 // Function to get video by filename
