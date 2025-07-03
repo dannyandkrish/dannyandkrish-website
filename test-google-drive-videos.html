@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Drive Video Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .video-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .video-title {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .test-iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 4px;
+        }
+        .test-info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .error {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c00;
+        }
+        .success {
+            background: #efe;
+            border: 1px solid #cfc;
+            color: #060;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎬 Google Drive Video Loading Test</h1>
+    
+    <div class="test-info">
+        <h3>How to test your Google Drive videos:</h3>
+        <ol>
+            <li><strong>Get your video file ID:</strong> Right-click video in Google Drive → Get link → Copy the ID from the URL</li>
+            <li><strong>Replace the placeholder below:</strong> Change "YOUR_FILE_ID_HERE" with your actual file ID</li>
+            <li><strong>Check sharing settings:</strong> Make sure the video is set to "Anyone with the link can view"</li>
+            <li><strong>Test the embed:</strong> The video should load and play in the iframe below</li>
+        </ol>
+    </div>
+
+    <div class="video-container">
+        <h3 class="video-title">🎵 Test Your Alehouse Video</h3>
+        <p><strong>Current URL:</strong> <code>https://drive.google.com/file/d/1JKF0bUL57X57wi-95IRTMifn6R3Or-J/preview</code></p>
+        <iframe 
+            class="test-iframe"
+            src="https://drive.google.com/file/d/1JKF0bUL57X57wi-95IRTMifn6R3Or-J/preview"
+            title="Alehouse Video Test"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+        <p><em>Testing the corrected Alehouse video file ID</em></p>
+    </div>
+
+    <div class="video-container">
+        <h3 class="video-title">✅ Working Example (Sample Video)</h3>
+        <p><strong>This should work:</strong> <code>Sample video for testing</code></p>
+        <iframe 
+            class="test-iframe"
+            src="https://drive.google.com/file/d/1SampleFileIdThatWontWork/preview"
+            title="Sample Video"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+        <p><em>This is just a placeholder - replace with your actual file ID.</em></p>
+    </div>
+
+    <div class="test-info">
+        <h3>📝 Instructions for updating your website:</h3>
+        <p>Once you confirm a video works in this test page:</p>
+        <ol>
+            <li>Copy the working file ID</li>
+            <li>Open <code>src/utils/googleDrive.js</code></li>
+            <li>Find the <code>realVideos</code> object</li>
+            <li>Replace the placeholder ID with your real file ID:
+                <br><code>'alehouse-video.mp4': 'YOUR_WORKING_FILE_ID_HERE'</code>
+            </li>
+            <li>Save the file and refresh your website</li>
+        </ol>
+    </div>
+
+    <div class="test-info error">
+        <h3>⚠️ Common Issues:</h3>
+        <ul>
+            <li><strong>"refused to connect"</strong> - Video sharing is not set to public</li>
+            <li><strong>Blank iframe</strong> - Incorrect file ID or file doesn't exist</li>
+            <li><strong>"Video unavailable"</strong> - File might be corrupted or wrong format</li>
+            <li><strong>Playback issues</strong> - Large files may load slowly</li>
+        </ul>
+    </div>
+
+    <div class="test-info success">
+        <h3>✅ Success Indicators:</h3>
+        <ul>
+            <li>Video preview loads in the iframe</li>
+            <li>Play button appears and works</li>
+            <li>Video plays without errors</li>
+            <li>Fullscreen button works</li>
+        </ul>
+    </div>
+
+    <script>
+        // Simple JavaScript to help detect loading issues
+        window.addEventListener('load', function() {
+            const iframes = document.querySelectorAll('.test-iframe');
+            iframes.forEach((iframe, index) => {
+                iframe.addEventListener('error', function() {
+                    console.error(`Video ${index + 1} failed to load`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
