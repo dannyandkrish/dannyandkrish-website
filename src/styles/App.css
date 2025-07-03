@@ -45,3 +45,135 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(255, 107, 53, 0.3);
 }
+
+/* Mobile Video Control Fixes */
+/* Fix for magnified video controls and overlay issues on mobile devices */
+
+/* Mobile-specific video container styles */
+@media screen and (max-width: 768px) {
+  .mobile-video-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    overflow: hidden;
+    border-radius: 8px;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  .mobile-video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+    border-radius: 8px;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  /* Prevent video control magnification on iOS */
+  .mobile-video-container iframe {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    pointer-events: auto;
+  }
+
+  /* Fix for iOS Safari video overlay issues */
+  .mobile-video-container {
+    -webkit-overflow-scrolling: touch;
+    isolation: isolate;
+    will-change: transform;
+  }
+
+  /* Ensure proper touch handling for video controls */
+  .mobile-video-container iframe {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-perspective: 1000;
+    perspective: 1000;
+  }
+}
+
+/* YouTube Shorts mobile container */
+@media screen and (max-width: 768px) {
+  .mobile-shorts-container {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    aspect-ratio: 9/16;
+    overflow: hidden;
+    border-radius: 12px;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  .mobile-shorts-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+    border-radius: 12px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+}
+
+/* General mobile video improvements */
+@media screen and (max-width: 768px) {
+  /* Prevent zoom on double tap for video containers */
+  .video-grid {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Improve video loading on mobile */
+  iframe[src*="youtube.com"] {
+    background-color: #000;
+    will-change: transform;
+  }
+
+  /* Fix for video thumbnail loading */
+  .video-thumbnail {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Desktop fallback - ensure compatibility */
+@media screen and (min-width: 769px) {
+  .mobile-video-container,
+  .mobile-shorts-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .mobile-video-container iframe,
+  .mobile-shorts-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+  }
+}

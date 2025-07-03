@@ -90,13 +90,14 @@ const Videos = () => {
     };
   });
 
-  // Sample YouTube video data organized by categories - replace with real YouTube video IDs
+  // Sample YouTube video data organized by categories - TEMPORARY WORKING IDs FOR TESTING
+  // TODO: Replace these with your actual YouTube video IDs when available
   const youtubeVideos = [
     // Music Videos
     {
       id: 'yt1',
       title: "Midnight Dreams - Official Music Video",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual video ID
+      youtubeId: "jNQXAC9IVRw", // TEMP: First YouTube video ever (working test ID)
       category: "music-videos",
       language: "English",
       description: "Our latest single featuring atmospheric visuals and intimate performance shots.",
@@ -106,7 +107,7 @@ const Videos = () => {
     {
       id: 'yt2',
       title: "City Lights - Official Video",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual video ID
+      youtubeId: "hT_nvWreIhg", // TEMP: Counting Stars - OneRepublic (working test ID)
       category: "music-videos",
       language: "Hindi",
       description: "Urban-inspired music video shot across the city's most iconic locations.",
@@ -116,7 +117,7 @@ const Videos = () => {
     {
       id: 'yt3',
       title: "Journey Home - Lyric Video",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual video ID
+      youtubeId: "JGwWNGJdvx8", // TEMP: Shape of You - Ed Sheeran (working test ID)
       category: "music-videos",
       language: "Tamil",
       description: "Animated lyric video for our emotional ballad Journey Home.",
@@ -128,7 +129,7 @@ const Videos = () => {
     {
       id: 'yt4',
       title: "Whispered Words - Original Composition",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual video ID
+      youtubeId: "1w7OgIMMRc4", // TEMP: Sweet Child O' Mine - Guns N' Roses (working test ID)
       category: "originals",
       language: "Telugu",
       description: "Our latest original composition blending traditional and modern elements.",
@@ -138,7 +139,7 @@ const Videos = () => {
     {
       id: 'yt5',
       title: "Monsoon Melodies - Original Song",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual video ID
+      youtubeId: "kJQP7kiw5Fk", // TEMP: Despacito - Luis Fonsi (working test ID)
       category: "originals",
       language: "Hindi",
       description: "An original piece inspired by the beauty of monsoon season.",
@@ -150,7 +151,7 @@ const Videos = () => {
     {
       id: 'yt6',
       title: "Summer Tour 2024 Announcement",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual video ID
+      youtubeId: "9bZkp7q19f0", // TEMP: PSY - GANGNAM STYLE (working test ID)
       category: "event-announcements",
       language: "English",
       description: "Exciting announcement about our upcoming summer tour dates and venues.",
@@ -160,11 +161,13 @@ const Videos = () => {
   ];
 
   // YouTube Shorts data - portrait format short videos
+  // YouTube Shorts data - TEMPORARY WORKING IDs FOR TESTING
+  // TODO: Replace these with your actual YouTube Shorts IDs when available
   const youtubeShorts = [
     {
       id: 'yt_short_1',
       title: "60 Second Song Challenge 🎵",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube Short ID
+      youtubeId: "L_jWHffIx5E", // TEMP: YouTube Shorts test ID
       category: "youtube-shorts",
       language: "English",
       description: "Can we perform a full song in 60 seconds? Challenge accepted! 🎤",
@@ -174,7 +177,7 @@ const Videos = () => {
     {
       id: 'yt_short_2',
       title: "Behind the Scenes: Studio Life 🎬",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube Short ID
+      youtubeId: "aqz-KE-bpKQ", // TEMP: Working short video ID
       category: "youtube-shorts",
       language: "Hindi",
       description: "Quick peek into our studio sessions and creative process 🎶",
@@ -184,7 +187,7 @@ const Videos = () => {
     {
       id: 'yt_short_3',
       title: "Harmony Check ✨",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube Short ID
+      youtubeId: "L3wKzyIN1yk", // TEMP: Working short video ID (Cat Piano)
       category: "youtube-shorts",
       language: "Tamil",
       description: "Testing our harmonies - when it clicks, it really clicks! 🎵",
@@ -194,7 +197,7 @@ const Videos = () => {
     {
       id: 'yt_short_4',
       title: "Guess the Song 🎵",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube Short ID
+      youtubeId: "mWRsgZuwf_8", // TEMP: Working short video ID
       category: "youtube-shorts",
       language: "Telugu",
       description: "Can you guess the song from just these few notes? 🤔",
@@ -204,7 +207,7 @@ const Videos = () => {
     {
       id: 'yt_short_5',
       title: "Quick Vocal Warm-up 🎤",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube Short ID
+      youtubeId: "L_jWHffIx5E", // TEMP: Reusing working ID for now
       category: "youtube-shorts",
       language: "English",
       description: "Our go-to vocal warm-up routine before every performance! 🎤",
@@ -214,7 +217,7 @@ const Videos = () => {
     {
       id: 'yt_short_6',
       title: "Songwriting Moment 📝",
-      youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube Short ID
+      youtubeId: "aqz-KE-bpKQ", // TEMP: Reusing working ID for now
       category: "youtube-shorts",
       language: "Hindi",
       description: "When inspiration strikes... capturing the creative moment! ✨",
@@ -401,7 +404,7 @@ const Videos = () => {
                         return (
                           <div key={`${video.source}-${video.id}`} className="break-inside-avoid mb-4">
                             <div className="card overflow-hidden group hover:shadow-xl transition-all duration-300">
-                              <div className={containerClass} style={aspectRatioStyle}>
+                              <div className={`${containerClass} ${isPortrait ? 'mobile-shorts-container' : 'mobile-video-container'} video-container-mobile video-overlay-fix mobile-video-controls-fix`} style={aspectRatioStyle}>
                                 <iframe
                                   src={video.embedUrl}
                                   title={video.title}
@@ -409,6 +412,7 @@ const Videos = () => {
                                   frameBorder="0"
                                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                   allowFullScreen
+                                  playsInline
                                 ></iframe>
                                 <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
                                   {video.duration}
@@ -525,7 +529,7 @@ const Videos = () => {
                         return (
                           <div key={`${video.source}-${video.id}`} className="break-inside-avoid mb-4">
                             <div className="card overflow-hidden group hover:shadow-xl transition-all duration-300">
-                              <div className="relative w-full bg-gray-100 rounded-lg overflow-hidden" style={{ paddingBottom: '177.8%' }}>
+                              <div className="mobile-shorts-container video-container-mobile video-overlay-fix mobile-video-controls-fix" style={{ paddingBottom: '177.8%' }}>
                                 <iframe
                                   src={video.embedUrl}
                                   title={video.title}
@@ -533,6 +537,7 @@ const Videos = () => {
                                   frameBorder="0"
                                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                   allowFullScreen
+                                  playsInline
                                 ></iframe>
                                 <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
                                   {video.duration}
@@ -584,7 +589,7 @@ const Videos = () => {
                       {landscapeVideos.map((video) => {
                         return (
                           <div key={`${video.source}-${video.id}`} className="card overflow-hidden group hover:shadow-xl transition-all duration-300">
-                            <div className="relative w-full bg-gray-100 rounded-lg overflow-hidden" style={{ paddingBottom: '56.25%' }}>
+                            <div className="mobile-video-container video-container-mobile video-overlay-fix mobile-video-controls-fix" style={{ paddingBottom: '56.25%' }}>
                               <iframe
                                 src={video.embedUrl}
                                 title={video.title}
@@ -592,6 +597,7 @@ const Videos = () => {
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
+                                playsInline
                               ></iframe>
                               <div className="absolute top-3 right-3 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
                                 {video.duration}
