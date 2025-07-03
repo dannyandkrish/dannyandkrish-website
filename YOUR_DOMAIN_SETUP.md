@@ -1,7 +1,7 @@
 # Custom Domain Setup for Your Deployment
 
 ## Your Azure Static Web App Details
-- **App Name**: swa-frsw223keuo5zk
+- **App Name**: swa-frsw23keuo5zk
 - **Current URL**: https://ambitious-water-0f19277703.2.azurestaticapps.net
 - **Resource Group**: rg-dannyandkrish-prod
 - **Target Domain**: dannyandkrish.com
@@ -12,13 +12,13 @@
 ```bash
 # Add the root domain
 az staticwebapp hostname set \
-  --name swa-frsw223keuo5zk \
+  --name swa-frsw23keuo5zk \
   --resource-group rg-dannyandkrish-prod \
   --hostname dannyandkrish.com
 
 # Add the www subdomain
 az staticwebapp hostname set \
-  --name swa-frsw223keuo5zk \
+  --name swa-frsw23keuo5zk \
   --resource-group rg-dannyandkrish-prod \
   --hostname www.dannyandkrish.com
 ```
@@ -27,18 +27,28 @@ az staticwebapp hostname set \
 ```bash
 # Get validation details for root domain
 az staticwebapp hostname show \
-  --name swa-frsw223keuo5zk \
+  --name swa-frsw23keuo5zk \
   --resource-group rg-dannyandkrish-prod \
   --hostname dannyandkrish.com
 
 # Get validation details for www subdomain  
 az staticwebapp hostname show \
-  --name swa-frsw223keuo5zk \
+  --name swa-frsw23keuo5zk \
   --resource-group rg-dannyandkrish-prod \
   --hostname www.dannyandkrish.com
 ```
 
 ## GoDaddy DNS Configuration
+
+**⚠️ Important**: GoDaddy doesn't support ALIAS or ANAME records for apex domains. You have these options:
+
+### Option 1: Use CNAME for www + Domain Forwarding (Recommended)
+- Set up CNAME record for `www` subdomain
+- Use GoDaddy's domain forwarding to redirect `dannyandkrish.com` → `www.dannyandkrish.com`
+
+### Option 2: Use A Record (Not Recommended)
+- Use A record for apex domain (loses global distribution benefits)
+- Get IP from Azure Portal JSON View
 
 ### Required DNS Records:
 1. **CNAME Record for www**:
@@ -49,13 +59,18 @@ az staticwebapp hostname show \
    TTL: 1 Hour
    ```
 
-2. **A Record for root domain**:
+2. **A Record for root domain** (Alternative to ALIAS/ANAME):
    ```
    Type: A
    Name: @
-   Value: [Get this from Azure Portal or CLI]
+   Value: [Get from Azure Portal JSON View - 'stableInboundIP' property]
    TTL: 1 Hour
    ```
+   
+   **Note**: A records are not recommended for Static Web Apps as they:
+   - Direct traffic to a single regional host (no global distribution benefits)
+   - May affect performance for globally distributed traffic
+   - Consider using ALIAS, ANAME, or domain forwarding instead
 
 3. **TXT Record for validation**:
    ```
@@ -72,11 +87,17 @@ az staticwebapp hostname show \
 #### Method A: Using Azure Portal
 1. Go to [Azure Portal](https://portal.azure.com)
 2. Navigate to Resource Groups → `rg-dannyandkrish-prod`
-3. Click on `swa-frsw223keuo5zk`
+3. Click on `swa-frsw23keuo5zk`
 4. Go to "Custom domains" in the left menu
 5. Click "+ Add custom domain"
 6. Enter `dannyandkrish.com`
 7. Note the validation TXT record provided
+
+**To get the IP address for A record (if needed):**
+1. In your Static Web App, click "Overview"
+2. In the top-right corner of the "Essentials" section, click "JSON View"
+3. Look for the `stableInboundIP` property and copy its value
+4. Use this IP in your A record configuration
 
 #### Method B: Using Azure CLI (Faster)
 Run the commands provided above in your terminal.
@@ -106,7 +127,7 @@ Write-Host "Setting up custom domain for dannyandkrish.com..." -ForegroundColor 
 
 # Variables
 $resourceGroup = "rg-dannyandkrish-prod"
-$appName = "swa-frsw223keuo5zk"
+$appName = "swa-frsw23keuo5zk"
 $rootDomain = "dannyandkrish.com"
 $wwwDomain = "www.dannyandkrish.com"
 
