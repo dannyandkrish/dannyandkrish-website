@@ -2,16 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, Volume2, VolumeX, Maximize2, Heart, MessageCircle, Share, Instagram } from 'lucide-react';
 import { processInstagramEmbeds } from '../utils/instagramVideos';
 
-const InstagramVideoPlayer = ({ video, showControls = true, autoplay = false }) => {
+const InstagramVideoPlayer = ({ video, showControls = true, autoplay = false, showEmbedByDefault = true }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
-  const [showEmbed, setShowEmbed] = useState(false);
+  const [showEmbed, setShowEmbed] = useState(showEmbedByDefault && video.embedHtml);
   const videoRef = useRef(null);
 
   useEffect(() => {
     if (showEmbed) {
-      processInstagramEmbeds();
+      // Delay to ensure DOM is ready
+      setTimeout(() => {
+        processInstagramEmbeds();
+      }, 100);
     }
   }, [showEmbed]);
 
@@ -61,12 +64,12 @@ const InstagramVideoPlayer = ({ video, showControls = true, autoplay = false }) 
   // Instagram embed view
   if (showEmbed && video.embedHtml) {
     return (
-      <div className="instagram-embed-container">
+      <div className="instagram-embed-container bg-gray-900 rounded-lg p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold text-white">{video.title}</h3>
           <button
             onClick={() => setShowEmbed(false)}
-            className="text-white hover:text-gray-300"
+            className="text-white hover:text-gray-300 px-3 py-1 bg-gray-700 rounded"
           >
             ← Back to Video
           </button>
@@ -99,11 +102,14 @@ const InstagramVideoPlayer = ({ video, showControls = true, autoplay = false }) 
             Your browser does not support the video tag.
           </video>
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
+          <div 
+            className="w-full h-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center cursor-pointer hover:from-purple-700 hover:to-blue-700 transition-all"
+            onClick={() => setShowEmbed(true)}
+          >
             <div className="text-center text-white">
               <Instagram size={48} className="mx-auto mb-4" />
               <p className="text-lg font-semibold">Instagram Video</p>
-              <p className="text-sm opacity-80">Click to view on Instagram</p>
+              <p className="text-sm opacity-80">Click to view Instagram embed</p>
             </div>
           </div>
         )}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Instagram, Play, Heart, MessageCircle, Share, Filter, Grid, List } from 'lucide-react';
 import InstagramVideoPlayer from './InstagramVideoPlayer';
-import { instagramVideos, getVideosByCategory } from '../utils/instagramVideos';
+import { instagramVideos, getVideosByCategory, processInstagramEmbeds } from '../utils/instagramVideos';
 
 const InstagramVideoGallery = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -9,7 +9,7 @@ const InstagramVideoGallery = () => {
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [filteredVideos, setFilteredVideos] = useState(instagramVideos);
 
-  const categories = ['all', 'studio', 'live', 'acoustic', 'exclusive'];
+  const categories = ['all', 'music', 'live', 'studio', 'acoustic'];
 
   useEffect(() => {
     if (filterCategory === 'all') {
@@ -17,6 +17,11 @@ const InstagramVideoGallery = () => {
     } else {
       setFilteredVideos(getVideosByCategory(filterCategory));
     }
+    
+    // Process Instagram embeds when videos change
+    setTimeout(() => {
+      processInstagramEmbeds();
+    }, 100);
   }, [filterCategory]);
 
   const handleVideoClick = (video) => {

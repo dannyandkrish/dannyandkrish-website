@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Play, Instagram, Youtube, ExternalLink, Filter, Grid, List, Heart } from 'lucide-react';
 import InstagramVideoPlayer from '../components/InstagramVideoPlayer';
 import InstagramVideoGallery from '../components/InstagramVideoGallery';
-import { instagramVideos } from '../utils/instagramVideos';
+import { instagramVideos, processInstagramEmbeds } from '../utils/instagramVideos';
 
 const VideosWithEmbedding = () => {
   const [activeTab, setActiveTab] = useState('instagram');
@@ -13,7 +13,19 @@ const VideosWithEmbedding = () => {
     if (instagramVideos.length > 0) {
       setFeaturedVideo(instagramVideos[0]);
     }
+    
+    // Process Instagram embeds after component mounts
+    processInstagramEmbeds();
   }, []);
+
+  // Re-process Instagram embeds when tab changes
+  useEffect(() => {
+    if (activeTab === 'instagram' || activeTab === 'all') {
+      setTimeout(() => {
+        processInstagramEmbeds();
+      }, 100);
+    }
+  }, [activeTab]);
 
   const youtubeVideos = [
     {

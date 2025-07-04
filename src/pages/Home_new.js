@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getImageCollection, getImageByFilename, getVideoByFilename } from '../utils/googleDrive';
+import { instagramVideos, processInstagramEmbeds } from '../utils/instagramVideos';
+import InstagramVideoPlayer from '../components/InstagramVideoPlayer';
 
 // Home page with hero background image (Google Drive ID: 1sT36eZNSa7h9gpd2_a6sc2131wmNpKVr)
 // To revert to blue gradient background, change USE_IMAGE_BACKGROUND to false
@@ -11,12 +13,20 @@ const Home = () => {
   const performanceImages = getImageCollection('performance');
   const candidImages = getImageCollection('candid');
   
+  // Get the latest Instagram reel for featured video
+  const latestInstagramReel = instagramVideos.find(video => video.featured) || instagramVideos[0];
+  
   // Hero background configuration - toggle between image and gradient
   // ***** TOGGLE THIS TO SWITCH BACKGROUND *****
   const USE_IMAGE_BACKGROUND = true; // Set to false to revert to blue gradient
   // *******************************************
   
   const heroBackgroundImage = getImageByFilename('hero-background.jpg', 'w1920'); // Original hero background
+  
+  // Process Instagram embeds after component mounts
+  useEffect(() => {
+    processInstagramEmbeds();
+  }, []);
   
   // Helper function to get a random Google Drive image or fallback
   const getRandomImage = (collection, fallback) => {
@@ -245,47 +255,65 @@ const Home = () => {
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">Latest Video</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Watch our latest music video and behind-the-scenes content
+              Watch our latest Instagram reel and behind-the-scenes content
             </p>
           </div>
           
+          {/* Instagram Reel Player */}
           <div className="max-w-2xl mx-auto">
-            <div className="card overflow-hidden">
-              <div className="relative w-full bg-gray-100 rounded-lg overflow-hidden" style={{ paddingBottom: '125%' }}>
-                <iframe
-                  src={getVideoByFilename('alehouse-video.mp4')}
-                  title="Alehouse - Live Performance"
-                  className="absolute inset-0 w-full h-full border-0"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-                <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
-                  3:45
+            {latestInstagramReel && (
+              <InstagramVideoPlayer 
+                video={latestInstagramReel} 
+                showControls={true}
+                className="mb-6"
+              />
+            )}
+          </div>
+          
+          {/* Additional Video Options */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            {instagramVideos.slice(1, 4).map((video, index) => (
+              <div key={video.id} className="bg-gray-800 rounded-lg overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+                <div className="relative aspect-video">
+                  <img
+                    src={video.thumbnailUrl || 'https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Instagram+Video'}
+                    alt={video.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                    <div className="bg-white bg-opacity-20 rounded-full p-3">
+                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
+                    {video.duration}
+                  </div>
+                  <div className="absolute top-2 left-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
+                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zM7 4V3h10v1H7zM7 19V6h10v13H7z"/>
+                    </svg>
+                    Instagram
+                  </div>
                 </div>
-                <div className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
-                  Live Performance
-                </div>
-                <div className="absolute bottom-2 left-2 bg-purple-600 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
-                  <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zM7 4V3h10v1H7zM7 19V6h10v13H7z"/>
-                  </svg>
-                  Portrait
+                <div className="p-4">
+                  <h3 className="font-display text-lg font-bold mb-2 text-white">{video.title}</h3>
+                  <p className="text-gray-300 text-sm mb-3">{video.description}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-gray-400">{video.date}</span>
+                    <div className="flex items-center space-x-2 text-xs text-gray-400">
+                      <span>👀 {video.views}</span>
+                      <span>❤️ {video.likes}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="p-4">
-                <h3 className="font-display text-xl font-bold mb-2">Alehouse - Live Performance</h3>
-                <p className="text-gray-600 text-sm">Live performance showcasing our energy and stage presence</p>
-                <div className="flex justify-between items-center mt-3">
-                  <span className="text-xs text-gray-500">June 20, 2024</span>
-                  <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs">Live Performances</span>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
             
           <div className="text-center mt-8">
-            <Link to="/videos" className="btn-primary text-lg px-8 py-4 bg-transparent border-2 border-white hover:bg-white hover:text-black">
+            <Link to="/videos-embedded" className="btn-primary text-lg px-8 py-4 bg-transparent border-2 border-white hover:bg-white hover:text-black">
               📺 Watch More Videos
             </Link>
           </div>
