@@ -152,3 +152,12 @@ output LOG_ANALYTICS_WORKSPACE_ID string = logAnalyticsWorkspace.id
 
 @description('The resource group ID')
 output RESOURCE_GROUP_ID string = resourceGroup().id
+
+@description('The Azure location where resources are deployed')
+output AZURE_LOCATION string = location
+
+@description('The Azure tenant ID')
+output AZURE_TENANT_ID string = tenant().tenantId
+
+@description('The main web URI (same as Static Web App URL)')
+output WEB_URI string = 'https://${staticWebApp.properties.defaultHostname}'

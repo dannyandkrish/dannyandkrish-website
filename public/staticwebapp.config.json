@@ -1,0 +1,62 @@
+{
+  "platform": {
+    "apiRuntime": "node:18"
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/images/*.{png,jpg,gif}", "/css/*"]
+  },
+  "routes": [
+    {
+      "route": "/",
+      "serve": "/index.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/about",
+      "serve": "/index.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/music", 
+      "serve": "/index.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/contact",
+      "serve": "/index.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/videos",
+      "serve": "/index.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/gallery",
+      "serve": "/index.html", 
+      "statusCode": 200
+    },
+    {
+      "route": "/schedule",
+      "serve": "/index.html",
+      "statusCode": 200
+    }
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html",
+      "statusCode": 200
+    }
+  },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "SAMEORIGIN",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.instagram.com https://platform.instagram.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' fonts.googleapis.com https://www.instagram.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: https: *.cdninstagram.com *.fbcdn.net; media-src 'self' data: blob: https: *.cdninstagram.com *.fbcdn.net; connect-src 'self' https: https://www.instagram.com https://graph.instagram.com; frame-src 'self' https://drive.google.com https://www.youtube.com https://youtube.com https://open.spotify.com https://www.instagram.com https://instagram.com; object-src 'none';",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), autoplay=(self https://www.instagram.com https://instagram.com *.cdninstagram.com)"
+  },
+  "mimeTypes": {
+    ".json": "application/json"
+  }
+}
