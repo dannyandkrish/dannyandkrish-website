@@ -287,18 +287,13 @@ const Home = () => {
           </div>
           
           <div className="max-w-4xl mx-auto">
-            {/* Clean Instagram Embed without white container */}
-            <div className="relative bg-black rounded-lg overflow-hidden shadow-2xl" style={{ paddingBottom: '75%' }}>
+            {/* Instagram Embed - Let it show full height with native Instagram buttons */}
+            <div className="relative w-full max-w-lg mx-auto bg-white rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
               <div 
-                className="absolute inset-0 w-full h-full instagram-embed"
+                className="relative w-full instagram-embed"
+                style={{ minHeight: '700px' }}
                 dangerouslySetInnerHTML={{ __html: instagramVideos[0].embedHtml }}
               />
-              {/* Category Badge - Top Right */}
-              <div className="absolute top-4 right-4">
-                <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-medium capitalize">
-                  {instagramVideos[0].category}
-                </span>
-              </div>
             </div>
             
             {/* Centered buttons below the embed */}
