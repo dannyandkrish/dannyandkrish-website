@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getImageCollection, getImageByFilename, getVideoByFilename } from '../utils/googleDrive';
+import { instagramVideos, processInstagramEmbeds } from '../utils/instagramVideos';
 
 // Home page with hero background image (Google Drive ID: 1sT36eZNSa7h9gpd2_a6sc2131wmNpKVr)
 // To revert to blue gradient background, change USE_IMAGE_BACKGROUND to false
@@ -10,6 +11,11 @@ const Home = () => {
   const heroImages = getImageCollection('hero');
   const performanceImages = getImageCollection('performance');
   const candidImages = getImageCollection('candid');
+  
+  // Process Instagram embeds when component mounts
+  useEffect(() => {
+    processInstagramEmbeds();
+  }, []);
   
   // Hero background configuration - toggle between image and gradient
   // ***** TOGGLE THIS TO SWITCH BACKGROUND *****
@@ -280,45 +286,42 @@ const Home = () => {
             </p>
           </div>
           
-          <div className="max-w-2xl mx-auto">
-            <div className="card overflow-hidden">
-              <div className="relative w-full bg-gray-100 rounded-lg overflow-hidden" style={{ paddingBottom: '125%' }}>
-                <iframe
-                  src={getVideoByFilename('alehouse-video.mp4')}
-                  title="Alehouse - Live Performance"
-                  className="absolute inset-0 w-full h-full border-0"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-                <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
-                  3:45
-                </div>
-                <div className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
-                  Live Performance
-                </div>
-                <div className="absolute bottom-2 left-2 bg-purple-600 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
-                  <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zM7 4V3h10v1H7zM7 19V6h10v13H7z"/>
-                  </svg>
-                  Portrait
-                </div>
-              </div>
-              <div className="p-4">
-                <h3 className="font-display text-xl font-bold mb-2">Alehouse - Live Performance</h3>
-                <p className="text-gray-600 text-sm">Live performance showcasing our energy and stage presence</p>
-                <div className="flex justify-between items-center mt-3">
-                  <span className="text-xs text-gray-500">June 20, 2024</span>
-                  <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs">Live Performances</span>
-                </div>
+          <div className="max-w-4xl mx-auto">
+            {/* Clean Instagram Embed without white container */}
+            <div className="relative bg-black rounded-lg overflow-hidden shadow-2xl" style={{ paddingBottom: '75%' }}>
+              <div 
+                className="absolute inset-0 w-full h-full instagram-embed"
+                dangerouslySetInnerHTML={{ __html: instagramVideos[0].embedHtml }}
+              />
+              {/* Category Badge - Top Right */}
+              <div className="absolute top-4 right-4">
+                <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-medium capitalize">
+                  {instagramVideos[0].category}
+                </span>
               </div>
             </div>
-          </div>
             
-          <div className="text-center mt-8">
-            <Link to="/videos" className="btn-primary text-lg px-8 py-4 bg-transparent border-2 border-white hover:bg-white hover:text-black">
-              📺 Watch More Videos
-            </Link>
+            {/* Centered buttons below the embed */}
+            <div className="text-center mt-8 space-y-4">
+              <a
+                href={instagramVideos[0].instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-full transition-all transform hover:scale-105 shadow-lg"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2z"/>
+                  <path d="m9.5 8.5 5.5 3.5-5.5 3.5v-7z"/>
+                </svg>
+                <span className="font-medium">View on Instagram</span>
+              </a>
+              
+              <div>
+                <Link to="/videos" className="btn-primary text-lg px-8 py-4 bg-transparent border-2 border-white hover:bg-white hover:text-black">
+                  📺 Watch More Videos
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>

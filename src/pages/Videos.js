@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getImageByFilename, getVideoCollection, getVideoByFilename, getVideoMetadata, getVideoContainerStyles } from '../utils/googleDrive';
-import { instagramContent } from '../utils/instagram';
+import { getImageByFilename, getVideoByFilename, getVideoMetadata, getVideoContainerStyles } from '../utils/googleDrive';
+import { instagramVideos, processInstagramEmbeds } from '../utils/instagramVideos';
+import InstagramVideoGallery from '../components/InstagramVideoGallery';
 
 const Videos = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -8,6 +9,8 @@ const Videos = () => {
   // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Process Instagram embeds after component mounts
+    processInstagramEmbeds();
   }, []);
 
   // Helper functions
@@ -236,13 +239,30 @@ const Videos = () => {
       embedUrl: getVideoByFilename(video.filename)
     })),
     
-    // Instagram reels next (portrait orientation)
-    ...instagramContent.slice(0, 4).map(post => ({
-      ...post,
+    // Instagram reels next (portrait orientation) - Real Instagram videos
+    ...instagramVideos.map((video, index) => ({
+      id: video.id,
+      title: video.title,
+      description: video.description,
+      thumbnail: video.thumbnailUrl || 'https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Instagram+Video',
       category: 'instagram-reels',
       source: 'instagram',
-      embedUrl: null, // Instagram doesn't allow embedding
-      isPortrait: true // Explicitly mark as portrait for layout consistency
+      embedUrl: null, // Instagram doesn't allow direct embedding
+      instagramUrl: video.instagramUrl,
+      embedHtml: video.embedHtml,
+      duration: video.duration,
+      views: video.views,
+      likes: video.likes,
+      date: video.date,
+      hashtags: video.hashtags,
+      type: 'video',
+      platform: 'instagram',
+      isPortrait: true, // Explicitly mark as portrait for layout consistency
+      // Use different Google Drive images as thumbnails for variety
+      fallbackImage: index === 0 ? 'IMG_5199.JPG' : 
+                     index === 1 ? 'IMG_5133.JPG' : 
+                     index === 2 ? 'IMG_5081.JPG' : 
+                     index === 3 ? 'IMG_5148.JPG' : 'IMG_5199.JPG'
     })),
     
     // YouTube Shorts (portrait orientation)
@@ -452,68 +472,21 @@ const Videos = () => {
                   </div>
                 )}
 
-                {/* Instagram Videos - Very Compact Layout */}
-                {instagramVideos.length > 0 && (
+                {/* Instagram Videos - Proper Embed Implementation */}
+                {instagramVideos.length > 0 && (selectedCategory === 'all' || selectedCategory === 'instagram-reels') && (
                   <div className="mb-12">
                     <div className="text-center mb-8">
                       <h3 className="font-display text-2xl font-bold mb-2">Instagram Reels</h3>
                       <p className="text-gray-600">Follow us on Instagram for behind-the-scenes content</p>
                     </div>
-                    <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-                      {instagramVideos.map((video) => {
-                        return (
-                          <div key={`${video.source}-${video.id}`} className="break-inside-avoid mb-4">
-                            <div className="card overflow-hidden group hover:shadow-xl transition-all duration-300">
-                              <div className="relative w-full bg-gray-100 rounded-lg overflow-hidden" style={{ paddingBottom: '50%' }}>
-                                <img 
-                                  src={getImageByFilename('IMG_5199.JPG')} 
-                                  alt={video.title}
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                />
-                                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300">
-                                  <div className="bg-white bg-opacity-90 rounded-full p-2">
-                                    <svg className="w-5 h-5 text-gray-800" fill="currentColor" viewBox="0 0 20 20">
-                                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                                    </svg>
-                                  </div>
-                                </div>
-                                <div className="absolute top-2 right-2">
-                                  <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full font-medium">
-                                    Instagram
-                                  </span>
-                                </div>
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                  <div className="absolute bottom-3 left-3 right-3">
-                                    <h3 className="text-white font-semibold text-sm mb-1 truncate">
-                                      {video.title}
-                                    </h3>
-                                    <p className="text-gray-200 text-xs overflow-hidden text-ellipsis whitespace-nowrap">
-                                      {video.description}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="p-2">
-                                <div className="flex justify-between items-center">
-                                  <h3 className="font-semibold text-gray-900 text-xs truncate flex-1 mr-2">
-                                    {video.title}
-                                  </h3>
-                                  <a 
-                                    href={video.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-pink-600 hover:text-pink-700 text-xs font-medium whitespace-nowrap"
-                                    onClick={(e) => e.stopPropagation()}
-                                  >
-                                    View
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                    {/* Use the InstagramVideoGallery component for proper embed functionality */}
+                    <InstagramVideoGallery 
+                      showFilters={false}
+                      showHeader={false}
+                      compact={true}
+                      maxVideos={selectedCategory === 'instagram-reels' ? null : 6}
+                      defaultCategory='all'
+                    />
                   </div>
                 )}
 

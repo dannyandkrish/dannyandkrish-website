@@ -10,13 +10,13 @@ const InstagramVideoPlayer = ({ video, showControls = true, autoplay = false, sh
   const videoRef = useRef(null);
 
   useEffect(() => {
-    if (showEmbed) {
-      // Delay to ensure DOM is ready
+    if (showEmbed && video.embedHtml) {
+      // Delay to ensure DOM is ready, then process Instagram embeds
       setTimeout(() => {
         processInstagramEmbeds();
       }, 100);
     }
-  }, [showEmbed]);
+  }, [showEmbed, video.embedHtml]);
 
   const handlePlayPause = () => {
     if (videoRef.current) {

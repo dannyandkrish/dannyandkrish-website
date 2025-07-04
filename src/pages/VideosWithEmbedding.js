@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Instagram, Youtube, ExternalLink, Filter, Grid, List, Heart } from 'lucide-react';
+import { Play, Instagram, Youtube, ExternalLink, Heart } from 'lucide-react';
 import InstagramVideoPlayer from '../components/InstagramVideoPlayer';
 import InstagramVideoGallery from '../components/InstagramVideoGallery';
 import { instagramVideos, processInstagramEmbeds } from '../utils/instagramVideos';

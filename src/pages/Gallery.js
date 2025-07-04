@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getImageCollection, getImageByFilename } from '../utils/googleDrive';
+import { getImageCollection } from '../utils/googleDrive';
 
 const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
