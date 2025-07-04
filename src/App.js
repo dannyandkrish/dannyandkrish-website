@@ -7,6 +7,7 @@ import About from './pages/About';
 import Music from './pages/Music';
 import Contact from './pages/Contact';
 import Videos from './pages/Videos';
+import VideosWithEmbedding from './pages/VideosWithEmbedding';
 import Gallery from './pages/Gallery';
 import Connect from './pages/Connect';
 import Schedule from './pages/Schedule';
@@ -22,6 +23,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/music" element={<Music />} />
           <Route path="/videos" element={<Videos />} />
+          <Route path="/videos-embedded" element={<VideosWithEmbedding />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/contact" element={<Contact />} />
