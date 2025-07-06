@@ -37,7 +37,7 @@ export const realImages = {
   'IMG_5192.JPG': '1R03BlHxxRcpzV_ihAdI56QJrK9u7zgI_', // 1.5 MB
   'IMG_5160.JPG': '1OmTXu0VecSpWhvjbmGD3QdlsFHwK8MS1', // 1.8 MB
   'IMG_5113.JPG': '1muABSwFGd0VKGvGiNjkkE8hRm4S90NKf', // 2.5 MB
-  'IMG_5088.JPG': '1bONlGHigQM1MabIZvV77iT13PjHqWxIj', // 2.5 MB
+  'IMG_5088.JPG': '1Z-ryMrqqTCaPAY2FBWRpB4jacWtmPo6L', // 2.5 MB
 };
 
 // Real video file IDs from Google Drive - Videos folder
