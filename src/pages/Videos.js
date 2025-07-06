@@ -169,18 +169,18 @@ const Videos = () => {
   const youtubeShorts = [
     {
       id: 'yt_short_1',
-      title: "60 Second Song Challenge 🎵",
-      youtubeId: "L_jWHffIx5E", // TEMP: YouTube Shorts test ID
+      title: "20,000 People in Sync - Live at Soul Sante 🎵",
+      youtubeId: "0wqmSg_DD14", // TEMP: YouTube Shorts test ID
       category: "youtube-shorts",
       language: "English",
-      description: "Can we perform a full song in 60 seconds? Challenge accepted! 🎤",
+      description: "Soul Sante Live Danny&Krish 🎤",
       date: "2024-06-28",
       duration: "0:60"
     },
     {
       id: 'yt_short_2',
       title: "Behind the Scenes: Studio Life 🎬",
-      youtubeId: "aqz-KE-bpKQ", // TEMP: Working short video ID
+      youtubeId: "0wqmSg_DD14", // TEMP: Working short video ID
       category: "youtube-shorts",
       language: "Hindi",
       description: "Quick peek into our studio sessions and creative process 🎶",
@@ -190,7 +190,7 @@ const Videos = () => {
     {
       id: 'yt_short_3',
       title: "Harmony Check ✨",
-      youtubeId: "L3wKzyIN1yk", // TEMP: Working short video ID (Cat Piano)
+      youtubeId: "0wqmSg_DD14", // TEMP: Working short video ID (Cat Piano)
       category: "youtube-shorts",
       language: "Tamil",
       description: "Testing our harmonies - when it clicks, it really clicks! 🎵",
@@ -200,7 +200,7 @@ const Videos = () => {
     {
       id: 'yt_short_4',
       title: "Guess the Song 🎵",
-      youtubeId: "mWRsgZuwf_8", // TEMP: Working short video ID
+      youtubeId: "0wqmSg_DD14", // TEMP: Working short video ID
       category: "youtube-shorts",
       language: "Telugu",
       description: "Can you guess the song from just these few notes? 🤔",
@@ -210,7 +210,7 @@ const Videos = () => {
     {
       id: 'yt_short_5',
       title: "Quick Vocal Warm-up 🎤",
-      youtubeId: "L_jWHffIx5E", // TEMP: Reusing working ID for now
+      youtubeId: "0wqmSg_DD14", // TEMP: Reusing working ID for now
       category: "youtube-shorts",
       language: "English",
       description: "Our go-to vocal warm-up routine before every performance! 🎤",
@@ -220,7 +220,7 @@ const Videos = () => {
     {
       id: 'yt_short_6',
       title: "Songwriting Moment 📝",
-      youtubeId: "aqz-KE-bpKQ", // TEMP: Reusing working ID for now
+      youtubeId: "0wqmSg_DD14", // TEMP: Reusing working ID for now
       category: "youtube-shorts",
       language: "Hindi",
       description: "When inspiration strikes... capturing the creative moment! ✨",
