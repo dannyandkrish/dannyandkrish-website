@@ -37,7 +37,7 @@ export const realImages = {
   'IMG_5192.JPG': '1R03BlHxxRcpzV_ihAdI56QJrK9u7zgI_', // 1.5 MB
   'IMG_5160.JPG': '1OmTXu0VecSpWhvjbmGD3QdlsFHwK8MS1', // 1.8 MB
   'IMG_5113.JPG': '1muABSwFGd0VKGvGiNjkkE8hRm4S90NKf', // 2.5 MB
-  'IMG_5088.JPG': '1Z-ryMrqqTCaPAY2FBWRpB4jacWtmPo6L', // 2.5 MB
+  'IMG_5088.JPG': '1bONlGHigQM1MabIZvV77iT13PjHqWxIj', // 2.5 MB
 };
 
 // Real video file IDs from Google Drive - Videos folder
@@ -46,7 +46,7 @@ export const realVideos = {
   // Performance and music videos
   'alehouse-video.mp4': '1y92Eh1gx9To4Bker_7GQg-Q1I3Yzw7mr', // 115 MB - Alehouse video
   'hindi-performance.mp4': '1dLQ57Pryor1AMulHpN0aHgx1OAdUX1ee', // Hindi language performance
-  'english-performance.mp4': '1Myxh_7bmXNoCNNkJ5Tga957HvYYX0J3r', // English language performance 
+  'english-performance.mp4': '1Z-ryMrqqTCaPAY2FBWRpB4jacWtmPo6L', // English language performance 
   'telugu-performance.mp4': '1uPmYxcgV0_f-fotpcoCYp1e6UJHmVYY9', // Telugu language performance
   'tamil-performance.mp4': '1Sm8OXSvJR7wjgz6vP_evX4WcWrsXsjzF', // Tamil language performance
 };
