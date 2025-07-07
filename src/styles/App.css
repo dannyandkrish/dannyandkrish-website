@@ -187,6 +187,9 @@
   margin: 0 auto;
 }
 
+/* Consistent sizing for both Instagram Reels and Spotlight Sessions */
+.instagram-embed-consistent .instagram-media,
+.instagram-embed-consistent blockquote[data-instgrm-captioned],
 .instagram-embed .instagram-media,
 .instagram-embed blockquote[data-instgrm-captioned] {
   margin: 0 auto !important;

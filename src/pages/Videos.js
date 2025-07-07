@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getImageByFilename, getVideoByFilename, getVideoMetadata, getVideoContainerStyles } from '../utils/googleDrive';
-import { instagramVideos, processInstagramEmbeds } from '../utils/instagramVideos';
+import { instagramVideos, spotlightSessionVideos, processInstagramEmbeds } from '../utils/instagramVideos';
 import InstagramVideoGallery from '../components/InstagramVideoGallery';
 
 const Videos = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedTags, setSelectedTags] = useState([]);
   
   // Scroll to top when component mounts
   useEffect(() => {
@@ -229,14 +230,60 @@ const Videos = () => {
     }
   ];
 
+  // Get all unique tags from all videos
+  const getAllTags = () => {
+    const tagSet = new Set();
+    allVideos.forEach(video => {
+      if (video.tags) {
+        video.tags.forEach(tag => tagSet.add(tag));
+      }
+    });
+    return Array.from(tagSet).sort();
+  };
+
+  // Handle tag selection
+  const handleTagToggle = (tag) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setSelectedCategory('all');
+    setSelectedTags([]);
+  };
+
   // Combine all videos into a single array for filtering
-  // Order: Google Drive (mixed orientations), Instagram (portrait), YouTube Shorts (portrait), YouTube (landscape) at bottom
+  // Order: Spotlight Sessions first, then Instagram, Google Drive, YouTube Shorts, YouTube (landscape) at bottom
   const allVideos = [
-    // Google Drive videos first (mixed portrait/landscape orientations)
-    ...driveVideos.map(video => ({
-      ...video,
-      source: 'drive',
-      embedUrl: getVideoByFilename(video.filename)
+    // Spotlight Sessions first (portrait orientation) - Similar to Instagram but separate category
+    ...spotlightSessionVideos.map((video, index) => ({
+      id: video.id,
+      title: video.title,
+      description: video.description,
+      thumbnail: video.thumbnailUrl || 'https://via.placeholder.com/400x300/2a2a2a/ffffff?text=Spotlight+Session',
+      category: 'spotlight-sessions',
+      source: 'spotlight',
+      embedUrl: null, // Instagram-style embeds don't allow direct embedding
+      instagramUrl: video.instagramUrl,
+      embedHtml: video.embedHtml,
+      duration: video.duration,
+      views: video.views,
+      likes: video.likes,
+      date: video.date,
+      hashtags: video.hashtags,
+      tags: video.tags || ['Spotlight', 'Live'], // Add tags for filtering
+      type: 'video',
+      platform: 'spotlight',
+      isPortrait: true, // Explicitly mark as portrait for layout consistency
+      // Use different Google Drive images as thumbnails for variety
+      fallbackImage: index === 0 ? 'IMG_5148.JPG' : 
+                     index === 1 ? 'IMG_5199.JPG' : 
+                     index === 2 ? 'IMG_5133.JPG' : 
+                     index === 3 ? 'IMG_5081.JPG' : 'IMG_5148.JPG'
     })),
     
     // Instagram reels next (portrait orientation) - Real Instagram videos
@@ -255,6 +302,7 @@ const Videos = () => {
       likes: video.likes,
       date: video.date,
       hashtags: video.hashtags,
+      tags: video.tags || ['Instagram', 'Music Video'], // Add tags for filtering
       type: 'video',
       platform: 'instagram',
       isPortrait: true, // Explicitly mark as portrait for layout consistency
@@ -265,11 +313,20 @@ const Videos = () => {
                      index === 3 ? 'IMG_5148.JPG' : 'IMG_5199.JPG'
     })),
     
+    // Google Drive videos (mixed portrait/landscape orientations)
+    ...driveVideos.map(video => ({
+      ...video,
+      source: 'drive',
+      embedUrl: getVideoByFilename(video.filename),
+      tags: video.tags || [video.language, 'Live', 'Concert'] // Add tags for filtering
+    })),
+    
     // YouTube Shorts (portrait orientation)
     ...youtubeShorts.map(video => ({
       ...video,
       source: 'youtube-shorts',
       embedUrl: getYouTubeEmbedUrl(video.youtubeId),
+      tags: video.tags || [video.language, 'YouTube Shorts', 'Short Video'],
       isPortrait: true // Mark as portrait for masonry layout
     })),
     
@@ -277,7 +334,9 @@ const Videos = () => {
     ...youtubeVideos.map(video => ({
       ...video,
       source: 'youtube',
-      embedUrl: getYouTubeEmbedUrl(video.youtubeId)
+      embedUrl: getYouTubeEmbedUrl(video.youtubeId),
+      tags: video.tags || [video.language, 'YouTube', video.category === 'music-videos' ? 'Music Video' : 
+                         video.category === 'originals' ? 'Original' : 'Announcement']
     }))
   ];
 
@@ -289,13 +348,16 @@ const Videos = () => {
     { id: 'originals', label: 'Originals' },
     { id: 'event-announcements', label: 'Event Announcements' },
     { id: 'instagram-reels', label: 'Instagram Reels' },
+    { id: 'spotlight-sessions', label: 'Spotlight Sessions' },
     { id: 'youtube-shorts', label: 'YouTube Shorts' }
   ];
 
-  // Filter videos based on selected category
-  const filteredVideos = selectedCategory === 'all' 
-    ? allVideos 
-    : allVideos.filter(video => video.category === selectedCategory);
+  // Filter videos based on selected category and tags
+  const filteredVideos = allVideos.filter(video => {
+    const matchesCategory = selectedCategory === 'all' || video.category === selectedCategory;
+    const matchesTags = selectedTags.length === 0 || selectedTags.some(tag => video.tags?.includes(tag));
+    return matchesCategory && matchesTags;
+  });
 
   // Category info for display
   const categoryInfo = {
@@ -324,6 +386,11 @@ const Videos = () => {
       description: "Short clips and behind-the-scenes moments from our Instagram",
       color: "bg-pink-500"
     },
+    "spotlight-sessions": {
+      title: "Spotlight Sessions",
+      description: "Exclusive intimate sessions showcasing our artistry and musical journey",
+      color: "bg-amber-500"
+    },
     "youtube-shorts": {
       title: "YouTube Shorts",
       description: "Quick vertical videos showcasing our creativity and behind-the-scenes moments",
@@ -339,12 +406,12 @@ const Videos = () => {
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-6">Videos</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Watch our music videos, live performances, and behind-the-scenes content. 
-            Filter by category to find exactly what you're looking for.
+            Filter by category or tags to find exactly what you're looking for.
           </p>
         </div>
 
         {/* Category Filter */}
-        <div className="mb-8 flex flex-wrap justify-center gap-4">
+        <div className="mb-6 flex flex-wrap justify-center gap-4">
           {videoCategories.map(category => (
             <button
               key={category.id}
@@ -360,6 +427,39 @@ const Videos = () => {
           ))}
         </div>
 
+        {/* Tag Filter */}
+        <div className="mb-6">
+          <div className="text-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">Filter by Tags</h3>
+            <p className="text-sm text-gray-500">Select tags to filter videos by language, type, or style</p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {getAllTags().map(tag => (
+              <button
+                key={tag}
+                onClick={() => handleTagToggle(tag)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                  selectedTags.includes(tag)
+                    ? 'bg-amber-500 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-amber-100 hover:text-amber-700'
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+          {(selectedCategory !== 'all' || selectedTags.length > 0) && (
+            <div className="text-center">
+              <button
+                onClick={clearAllFilters}
+                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 underline"
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
+        </div>
+
         {/* Video Count */}
         <div className="text-center mb-8">
           <p className="text-gray-600">
@@ -367,6 +467,11 @@ const Videos = () => {
             {selectedCategory !== 'all' && (
               <span className="ml-2">
                 in <span className="font-semibold">{videoCategories.find(cat => cat.id === selectedCategory)?.label}</span>
+              </span>
+            )}
+            {selectedTags.length > 0 && (
+              <span className="ml-2">
+                with tag{selectedTags.length > 1 ? 's' : ''}: <span className="font-semibold">{selectedTags.join(', ')}</span>
               </span>
             )}
           </p>
@@ -388,6 +493,9 @@ const Videos = () => {
             const instagramVideos = filteredVideos.filter(video => 
               video.source === 'instagram'
             );
+            const spotlightVideos = filteredVideos.filter(video => 
+              video.source === 'spotlight'
+            );
             const youtubeShortsVideos = filteredVideos.filter(video => 
               video.source === 'youtube-shorts'
             );
@@ -397,10 +505,83 @@ const Videos = () => {
             
             return (
               <>
-                {/* Google Drive Videos - Masonry/Pinterest Layout */}
+                {/* Spotlight Sessions - First section */}
+                {spotlightVideos.length > 0 && (selectedCategory === 'all' || selectedCategory === 'spotlight-sessions') && (
+                  <div className="mb-12">
+                    {selectedCategory === 'all' && (
+                      <div className="text-center mb-8">
+                        <h3 className="font-display text-2xl font-bold mb-2">Spotlight Sessions</h3>
+                        <p className="text-gray-600">Exclusive intimate sessions showcasing our artistry and musical journey</p>
+                      </div>
+                    )}
+                    {/* Custom grid layout for spotlight sessions matching Instagram style */}
+                    <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                      {spotlightVideos.map((video, index) => {
+                        return (
+                          <div key={`${video.source}-${video.id}`} className="break-inside-avoid mb-6 bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                            {/* Instagram Embed Container */}
+                            <div className="p-2">
+                              <div 
+                                className="instagram-embed instagram-embed-consistent"
+                                dangerouslySetInnerHTML={{ __html: video.embedHtml }}
+                              />
+                            </div>
+                            
+                            {/* Action Footer matching Instagram style */}
+                            <div className="border-t border-gray-200 p-2">
+                              <div className="flex justify-between items-center">
+                                <h3 className="font-semibold text-gray-900 text-sm truncate flex-1 mr-2">
+                                  {video.title}
+                                </h3>
+                                <span className="bg-amber-500 text-white px-2 py-1 rounded-full text-xs whitespace-nowrap">
+                                  Spotlight
+                                </span>
+                              </div>
+                              {/* Tags */}
+                              {video.tags && (
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                  {video.tags.slice(0, 3).map((tag, tagIndex) => (
+                                    <span
+                                      key={tagIndex}
+                                      className="text-amber-600 text-xs hover:text-amber-700 cursor-pointer"
+                                    >
+                                      #{tag}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Instagram Videos - Proper Embed Implementation */}
+                {instagramVideos.length > 0 && (selectedCategory === 'all' || selectedCategory === 'instagram-reels') && (
+                  <div className="mb-12">
+                    {selectedCategory === 'all' && (
+                      <div className="text-center mb-8">
+                        <h3 className="font-display text-2xl font-bold mb-2">Instagram Reels</h3>
+                        <p className="text-gray-600">Follow us on Instagram for behind-the-scenes content</p>
+                      </div>
+                    )}
+                    {/* Use the InstagramVideoGallery component for proper embed functionality */}
+                    <InstagramVideoGallery 
+                      showFilters={false}
+                      showHeader={false}
+                      compact={true}
+                      maxVideos={selectedCategory === 'instagram-reels' ? null : 6}
+                      defaultCategory='all'
+                    />
+                  </div>
+                )}
+
+                {/* Google Drive Videos - Performance Videos Section */}
                 {driveVideos.length > 0 && (
                   <div className="mb-12">
-                    {driveVideos.length > 0 && instagramVideos.length > 0 && (
+                    {selectedCategory === 'all' && (instagramVideos.length > 0 || spotlightVideos.length > 0) && (
                       <div className="text-center mb-8">
                         <h3 className="font-display text-2xl font-bold mb-2">Performance Videos</h3>
                         <p className="text-gray-600">Our live performances and original content</p>
@@ -472,31 +653,15 @@ const Videos = () => {
                   </div>
                 )}
 
-                {/* Instagram Videos - Proper Embed Implementation */}
-                {instagramVideos.length > 0 && (selectedCategory === 'all' || selectedCategory === 'instagram-reels') && (
-                  <div className="mb-12">
-                    <div className="text-center mb-8">
-                      <h3 className="font-display text-2xl font-bold mb-2">Instagram Reels</h3>
-                      <p className="text-gray-600">Follow us on Instagram for behind-the-scenes content</p>
-                    </div>
-                    {/* Use the InstagramVideoGallery component for proper embed functionality */}
-                    <InstagramVideoGallery 
-                      showFilters={false}
-                      showHeader={false}
-                      compact={true}
-                      maxVideos={selectedCategory === 'instagram-reels' ? null : 6}
-                      defaultCategory='all'
-                    />
-                  </div>
-                )}
-
                 {/* YouTube Shorts - Portrait/Masonry Layout */}
                 {youtubeShortsVideos.length > 0 && (
                   <div className="mb-12">
-                    <div className="text-center mb-8">
-                      <h3 className="font-display text-2xl font-bold mb-2">YouTube Shorts</h3>
-                      <p className="text-gray-600">Quick vertical videos showcasing our creativity and fun moments</p>
-                    </div>
+                    {selectedCategory === 'all' && (
+                      <div className="text-center mb-8">
+                        <h3 className="font-display text-2xl font-bold mb-2">YouTube Shorts</h3>
+                        <p className="text-gray-600">Quick vertical videos showcasing our creativity and fun moments</p>
+                      </div>
+                    )}
                     <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
                       {youtubeShortsVideos.map((video) => {
                         return (
@@ -536,8 +701,10 @@ const Videos = () => {
                                   <span className="text-xs text-gray-500">
                                     {formatDate(video.date)}
                                   </span>
-                                  <span className="bg-red-600 text-white px-2 py-1 rounded-full text-xs">
-                                    YouTube Short
+                                  <span className={`text-white px-2 py-1 rounded-full text-xs ${
+                                    categoryInfo[video.category]?.color || 'bg-gray-500'
+                                  }`}>
+                                    {video.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                                   </span>
                                 </div>
                               </div>
@@ -552,7 +719,7 @@ const Videos = () => {
                 {/* YouTube Videos - Traditional Grid Layout */}
                 {landscapeVideos.length > 0 && (
                   <div>
-                    {(driveVideos.length > 0 || instagramVideos.length > 0 || youtubeShortsVideos.length > 0) && (
+                    {selectedCategory === 'all' && (driveVideos.length > 0 || instagramVideos.length > 0 || spotlightVideos.length > 0 || youtubeShortsVideos.length > 0) && (
                       <div className="text-center mb-8">
                         <h3 className="font-display text-2xl font-bold mb-2">YouTube Videos</h3>
                         <p className="text-gray-600">Our official music videos and content on YouTube</p>

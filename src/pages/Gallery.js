@@ -3,6 +3,7 @@ import { getImageCollection } from '../utils/googleDrive';
 
 const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedTags, setSelectedTags] = useState([]);
   const [lightboxImage, setLightboxImage] = useState(null);
 
   // Scroll to top when component mounts
@@ -21,7 +22,8 @@ const Gallery = () => {
     description: "Danny & Krish bringing energy and passion to the stage during a live performance.",
     date: "2024-06-20",
     type: "image",
-    filename: img.filename
+    filename: img.filename,
+    tags: ['Live', 'Concert', 'Performance', 'Stage', 'Music']
   }));
 
   const heroImages = getImageCollection('hero').map((img, index) => ({
@@ -33,7 +35,8 @@ const Gallery = () => {
     description: "Professional photos of Danny & Krish showcasing their musical partnership.",
     date: "2024-12-22",
     type: "image",
-    filename: img.filename
+    filename: img.filename,
+    tags: ['Promotional', 'Professional', 'Portrait', 'Duo', 'Band']
   }));
 
   const candidImages = getImageCollection('candid').map((img, index) => ({
@@ -45,7 +48,8 @@ const Gallery = () => {
     description: "Candid moments and behind-the-scenes glimpses of Danny & Krish's musical journey.",
     date: "2024-06-20",
     type: "image",
-    filename: img.filename
+    filename: img.filename,
+    tags: ['Behind the Scenes', 'Candid', 'Studio', 'Casual', 'Moments']
   }));
 
   // Instagram reels and videos - using Google Drive images as thumbnails
@@ -59,7 +63,8 @@ const Gallery = () => {
       description: "Behind the scenes in the studio - new music coming soon! 🎶 #DannyAndKrish #StudioLife #NewMusic",
       date: "2024-06-15",
       type: "video",
-      platform: "instagram"
+      platform: "instagram",
+      tags: ['Instagram', 'Studio', 'Behind the Scenes', 'New Music', 'Video']
     },
     {
       id: 201,
@@ -70,7 +75,8 @@ const Gallery = () => {
       description: "That feeling when the crowd sings along! 🙌 Last night was incredible! #LiveMusic #DannyAndKrish #Concert",
       date: "2024-06-10",
       type: "video",
-      platform: "instagram"
+      platform: "instagram",
+      tags: ['Instagram', 'Live', 'Concert', 'Energy', 'Video']
     },
     {
       id: 202,
@@ -81,7 +87,8 @@ const Gallery = () => {
       description: "Sneak peek of our latest cover! Can you guess the song? 🤔 Full version out now on all platforms! #Cover #Music",
       date: "2024-06-01",
       type: "video",
-      platform: "instagram"
+      platform: "instagram",
+      tags: ['Instagram', 'Cover', 'Music', 'Reveal', 'Video']
     },
     {
       id: 203,
@@ -92,7 +99,8 @@ const Gallery = () => {
       description: "Nothing beats the raw emotion of an acoustic session 🎸✨ Which song should we do next? #Acoustic #DannyAndKrish",
       date: "2024-05-20",
       type: "video",
-      platform: "instagram"
+      platform: "instagram",
+      tags: ['Instagram', 'Acoustic', 'Session', 'Raw', 'Video']
     },
     {
       id: 204,
@@ -103,7 +111,8 @@ const Gallery = () => {
       description: "Pre-show warmups hitting different today! 🔥 Ready to bring the energy tonight! #Practice #ShowPrep #Music",
       date: "2024-05-15",
       type: "video",
-      platform: "instagram"
+      platform: "instagram",
+      tags: ['Instagram', 'Practice', 'Preparation', 'Energy', 'Video']
     },
     {
       id: 205,
@@ -114,7 +123,8 @@ const Gallery = () => {
       description: "When fans know every word... this is why we do what we do! 💙 Thank you for the love! #Fans #Grateful #Music",
       date: "2024-05-10",
       type: "video",
-      platform: "instagram"
+      platform: "instagram",
+      tags: ['Instagram', 'Fans', 'Grateful', 'Love', 'Video']
     },
     {
       id: 206,
@@ -125,7 +135,8 @@ const Gallery = () => {
       description: "2023 was incredible! From sold-out shows to new releases - here's our year in 60 seconds! #YearInReview #2023",
       date: "2023-12-31",
       type: "video",
-      platform: "instagram"
+      platform: "instagram",
+      tags: ['Instagram', 'Year Recap', 'Review', 'Highlights', 'Video']
     },
     {
       id: 207,
@@ -136,7 +147,8 @@ const Gallery = () => {
       description: "First listen to our new original song! What do you think? Full release coming soon! 🎼✨ #Original #NewMusic #Preview",
       date: "2023-11-15",
       type: "video",
-      platform: "instagram"
+      platform: "instagram",
+      tags: ['Instagram', 'Original', 'New Music', 'Preview', 'Video']
     },
     {
       id: 208,
@@ -147,7 +159,8 @@ const Gallery = () => {
       description: "When Danny & Krish create magic together! 🎼 The chemistry is real ✨ #DuoMagic #Chemistry #Music",
       date: "2024-06-25",
       type: "video",
-      platform: "instagram"
+      platform: "instagram",
+      tags: ['Instagram', 'Duo', 'Magic', 'Chemistry', 'Video']
     },
     {
       id: 209,
@@ -158,7 +171,8 @@ const Gallery = () => {
       description: "From idea to melody... watch our songwriting process! 📝🎵 What should our next song be about? #Songwriting #Process",
       date: "2024-06-20",
       type: "video",
-      platform: "instagram"
+      platform: "instagram",
+      tags: ['Instagram', 'Songwriting', 'Process', 'Creative', 'Video']
     }
   ];
 
@@ -170,6 +184,33 @@ const Gallery = () => {
     ...instagramContent
   ];
 
+  // Get all unique tags from images
+  const getAllTags = () => {
+    const tagSet = new Set();
+    images.forEach(image => {
+      if (image.tags) {
+        image.tags.forEach(tag => tagSet.add(tag));
+      }
+    });
+    return Array.from(tagSet).sort();
+  };
+
+  const availableTags = getAllTags();
+
+  // Toggle tag selection
+  const toggleTag = (tag) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  // Clear all tags
+  const clearTags = () => {
+    setSelectedTags([]);
+  };
+
   const categories = [
     { id: 'all', label: 'All Media' },
     { id: 'live', label: 'Live Performances' },
@@ -178,9 +219,17 @@ const Gallery = () => {
     { id: 'reels', label: 'Instagram Reels' }
   ];
 
-  const filteredImages = selectedCategory === 'all' 
-    ? images 
-    : images.filter(image => image.category === selectedCategory);
+  // Apply both category and tag filtering
+  const filteredImages = images.filter(image => {
+    // Category filter
+    const categoryMatch = selectedCategory === 'all' || image.category === selectedCategory;
+    
+    // Tag filter
+    const tagMatch = selectedTags.length === 0 || 
+      (image.tags && selectedTags.some(selectedTag => image.tags.includes(selectedTag)));
+    
+    return categoryMatch && tagMatch;
+  });
 
   const openLightbox = (image) => {
     // For Instagram videos/reels, open in new tab
@@ -231,7 +280,7 @@ const Gallery = () => {
         </div>
 
         {/* Category Filter */}
-        <div className="mb-8 flex flex-wrap justify-center gap-4">
+        <div className="mb-6 flex flex-wrap justify-center gap-4">
           {categories.map(category => (
             <button
               key={category.id}
@@ -247,11 +296,42 @@ const Gallery = () => {
           ))}
         </div>
 
+        {/* Tag Filter */}
+        <div className="mb-8">
+          <div className="text-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Filter by Tags</h3>
+            {selectedTags.length > 0 && (
+              <button
+                onClick={clearTags}
+                className="text-sm text-blue-600 hover:text-blue-700 underline"
+              >
+                Clear all tags ({selectedTags.length})
+              </button>
+            )}
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 max-w-4xl mx-auto">
+            {availableTags.map(tag => (
+              <button
+                key={tag}
+                onClick={() => toggleTag(tag)}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
+                  selectedTags.includes(tag)
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-700'
+                }`}
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Image Count */}
         <div className="text-center mb-8">
           <p className="text-gray-600">
             Showing {filteredImages.length} {filteredImages.length === 1 ? 'item' : 'items'}
             {selectedCategory !== 'all' && ` in ${categories.find(cat => cat.id === selectedCategory)?.label}`}
+            {selectedTags.length > 0 && ` with tags: ${selectedTags.join(', ')}`}
           </p>
         </div>
 
@@ -313,7 +393,7 @@ const Gallery = () => {
                 <p className="text-gray-600 text-xs mb-2 overflow-hidden text-ellipsis whitespace-nowrap">
                   {image.description}
                 </p>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mb-2">
                   <span className="text-xs text-gray-500">
                     {new Date(image.date).toLocaleDateString()}
                   </span>
@@ -325,6 +405,30 @@ const Gallery = () => {
                     {image.type === 'video' ? 'Video' : 'Photo'}
                   </span>
                 </div>
+                {/* Tags */}
+                {image.tags && (
+                  <div className="flex flex-wrap gap-1">
+                    {image.tags.slice(0, 3).map((tag, tagIndex) => (
+                      <span
+                        key={tagIndex}
+                        className="text-blue-600 text-xs hover:text-blue-700 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (!selectedTags.includes(tag)) {
+                            toggleTag(tag);
+                          }
+                        }}
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                    {image.tags.length > 3 && (
+                      <span className="text-gray-400 text-xs">
+                        +{image.tags.length - 3} more
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ))}

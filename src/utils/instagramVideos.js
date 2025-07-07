@@ -12,6 +12,16 @@ export const INSTAGRAM_REEL_URLS = {
   REEL_5: 'https://www.instagram.com/reel/DEh5pzjyvXM/'
 };
 
+// Centralized Spotlight Session URLs - separate from Instagram URLs
+export const SPOTLIGHT_FEED_URLS = {
+  SESSION_1: 'https://www.instagram.com/reel/DEq9-6sTZ4E/', // TODO: Replace with actual spotlight URL
+  SESSION_3: 'https://www.instagram.com/reel/DEqFQHEzwGd/', // TODO: Replace with actual spotlight URL
+  SESSION_2: 'https://www.instagram.com/reel/DKJbxR1KqZ_/', // TODO: Replace with actual spotlight URL
+  SESSION_4: 'https://www.instagram.com/reel/C5FayVyhdJq/',  // TODO: Replace with actual spotlight URL
+  SESSION_6: 'https://www.instagram.com/reel/DCoaP5ouzZr/',  // TODO: Replace with actual spotlight URL
+  SESSION_5: 'https://www.instagram.com/reel/DKeBq29T47J/' // TODO: Replace with actual spotlight URL
+};
+
 // Generate Instagram embed HTML for a reel URL with iOS Safari compatibility
 export const generateInstagramEmbed = (reelUrl) => {
   const embedUrl = `${reelUrl}?utm_source=ig_embed&amp;utm_campaign=loading`;
@@ -65,6 +75,7 @@ export const instagramVideos = [
     embedHtml: generateInstagramEmbed(INSTAGRAM_REEL_URLS.REEL_1),
     category: 'music',
     hashtags: ['#DannyAndKrish', '#MusicVideo', '#NewMusic', '#Vibes'],
+    tags: ['English', 'Music Video', 'Live'],
     date: '2024-06-25',
     featured: true
   },
@@ -76,6 +87,7 @@ export const instagramVideos = [
     embedHtml: generateInstagramEmbed(INSTAGRAM_REEL_URLS.REEL_2),
     category: 'live',
     hashtags: ['#DannyAndKrish', '#LivePerformance', '#Energy', '#Music'],
+    tags: ['English', 'Live', 'Concert'],
     date: '2024-06-20'
   },  {
     id: 'ig_reel_3',
@@ -85,6 +97,7 @@ export const instagramVideos = [
     embedHtml: generateInstagramEmbed(INSTAGRAM_REEL_URLS.REEL_3),
     category: 'studio',
     hashtags: ['#DannyAndKrish', '#BehindTheScenes', '#Studio', '#CreativeProcess'],
+    tags: ['English', 'Behind the Scenes', 'Studio'],
     date: '2024-06-18'
   },
   {
@@ -95,6 +108,7 @@ export const instagramVideos = [
     embedHtml: generateInstagramEmbed(INSTAGRAM_REEL_URLS.REEL_4),
     category: 'acoustic',
     hashtags: ['#DannyAndKrish', '#Acoustic', '#RawEmotion', '#Unplugged'],
+    tags: ['English', 'Acoustic', 'Unplugged'],
     date: '2024-06-15'
   },
   {
@@ -105,7 +119,80 @@ export const instagramVideos = [
     embedHtml: generateInstagramEmbed(INSTAGRAM_REEL_URLS.REEL_5),
     category: 'music',
     hashtags: ['#DannyAndKrish', '#NewRelease', '#HeartAndSoul', '#NewSong'],
+    tags: ['English', 'Music Video', 'New Release'],
     date: '2024-06-30'
+  }
+];
+
+// Spotlight Sessions - Similar to Instagram reels but separate for special content
+// TODO: Replace these URLs with actual spotlight session URLs
+export const spotlightSessionVideos = [
+  {
+    id: 'spotlight_1',
+    title: 'Spotlight Acoustic Session 🎵',
+    description: 'Exclusive spotlight session featuring our latest acoustic arrangements ✨',
+    instagramUrl: SPOTLIGHT_FEED_URLS.SESSION_1,
+    embedHtml: generateInstagramEmbed(SPOTLIGHT_FEED_URLS.SESSION_1),
+    category: 'spotlight',
+    hashtags: ['#DannyAndKrish', '#SpotlightSessions', '#Acoustic', '#Exclusive'],
+    tags: ['English', 'Spotlight', 'Acoustic', 'Exclusive'],
+    date: '2024-07-01',
+    featured: true
+  },
+  {
+    id: 'spotlight_2',
+    title: 'Harmony Spotlight ⚡',
+    description: 'Intimate performance showcasing our vocal harmony and musical chemistry 🎤',
+    instagramUrl: SPOTLIGHT_FEED_URLS.SESSION_2,
+    embedHtml: generateInstagramEmbed(SPOTLIGHT_FEED_URLS.SESSION_2),
+    category: 'spotlight',
+    hashtags: ['#DannyAndKrish', '#SpotlightSessions', '#Harmony', '#Intimate'],
+    tags: ['English', 'Spotlight', 'Live', 'Harmony'],
+    date: '2024-06-28'
+  },
+  {
+    id: 'spotlight_3',
+    title: 'Creative Process Spotlight 🎼',
+    description: 'Behind-the-scenes of our creative process in this special spotlight session 🎶',
+    instagramUrl: SPOTLIGHT_FEED_URLS.SESSION_3,
+    embedHtml: generateInstagramEmbed(SPOTLIGHT_FEED_URLS.SESSION_3),
+    category: 'spotlight',
+    hashtags: ['#DannyAndKrish', '#SpotlightSessions', '#Creative', '#Process'],
+    tags: ['English', 'Spotlight', 'Behind the Scenes', 'Creative'],
+    date: '2024-06-25'
+  },
+  {
+    id: 'spotlight_4',
+    title: 'Storytelling Spotlight 🎸',
+    description: 'Stripped-down acoustic spotlight session with raw emotion and storytelling 🎵',
+    instagramUrl: SPOTLIGHT_FEED_URLS.SESSION_4,
+    embedHtml: generateInstagramEmbed(SPOTLIGHT_FEED_URLS.SESSION_4),
+    category: 'spotlight',
+    hashtags: ['#DannyAndKrish', '#SpotlightSessions', '#Storytelling', '#Raw'],
+    tags: ['English', 'Spotlight', 'Acoustic', 'Storytelling'],
+    date: '2024-06-22'
+  },
+  {
+    id: 'spotlight_5',
+    title: 'Original Compositions Spotlight 🎶',
+    description: 'Latest spotlight session featuring our newest compositions and arrangements 💖',
+    instagramUrl: SPOTLIGHT_FEED_URLS.SESSION_5,
+    embedHtml: generateInstagramEmbed(SPOTLIGHT_FEED_URLS.SESSION_5),
+    category: 'spotlight',
+    hashtags: ['#DannyAndKrish', '#SpotlightSessions', '#NewMusic', '#Original'],
+    tags: ['English', 'Spotlight', 'Original', 'New Music'],
+    date: '2024-07-05'
+  },
+  {
+    id: 'spotlight_6',
+    title: 'Latest Spotlight Session �',
+    description: 'Our newest spotlight session with fresh arrangements and exclusive content �',
+    instagramUrl: SPOTLIGHT_FEED_URLS.SESSION_6,
+    embedHtml: generateInstagramEmbed(SPOTLIGHT_FEED_URLS.SESSION_6),
+    category: 'spotlight',
+    hashtags: ['#DannyAndKrish', '#SpotlightSessions', '#NewMusic', '#Exclusive'],
+    tags: ['English', 'Spotlight', 'Exclusive', 'Latest'],
+    date: '2024-07-07'
   }
 ];
 
